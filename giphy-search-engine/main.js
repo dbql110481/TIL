@@ -14,6 +14,9 @@ inputArea.addEventListener('keyup', (e) => {
     }
 });
 // 2. API를 활용하여 data를 ''받는다. 그리고 가공한다.
+const API_KEY = 'AatUVKRsGXN822Pgw3iOGllFulq9Nbh7'
+let keyword = 'dogs';
+const URL = `api.giphy.com/v1/gifs/search?q=${keyword}&api_key=${API_KEY}`
 
 // 3. GIF 파일들을 index.html 에 밀어 넣는다.
 const pushToDOM = (data) => {
