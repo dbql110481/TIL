@@ -15,11 +15,24 @@ inputArea.addEventListener('keyup', (e) => {
 });
 // 2. API를 활용하여 data를 ''받는다. 그리고 가공한다.
 const API_KEY = 'AatUVKRsGXN822Pgw3iOGllFulq9Nbh7'
-let keyword = 'dogs';
-const URL = `api.giphy.com/v1/gifs/search?q=${keyword}&api_key=${API_KEY}`
+let keyword = 'dogs';   
+const URL = `http://api.giphy.com/v1/gifs/search?q=${keyword}&api_key=${API_KEY}`
+
+    // Ajax request
+const GiphyAJAXCall = new XMLHttpRequest();
+GiphyAJAXCall.open('GET',URL);
+GiphyAJAXCall.send();
+
+GiphyAJAXCall.addEventListener('load', (e) => {
+    const rawData = e.target.response;
+    const parsedData = JSON.parse(rawData);
+    pushToDOM(parsedData);
+});
 
 // 3. GIF 파일들을 index.html 에 밀어 넣는다.
-const pushToDOM = (data) => {
-   const resultArea = document.querySelector('#result-area');
-   resultArea.innerHTML = data;
+const pushToDOM = (parsedData) => {
+    //console.log(parsedData.data[0].images.fixed_height.url);
+    const resultArea = document.querySelector('#result-area');
+    let imageURL = parsedData.data[20].images.fixed_height.url;
+    resultArea.innerHTML = `<img src=${imageURL} alt='dogs' />`;
 };
