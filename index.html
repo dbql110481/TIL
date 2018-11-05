@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cho Sang Hoon</title>
+</head>
+<body>
+    <h1 id="hphk">Happy Hacking!</h1>
+    <div>
+        <a href="#" id="a">Who said that</a>
+    </div>
+    <div>
+        <a href="#" id="b"> Said what?</a>
+    </div>
+    <script>
+        const who = document.querySelector('#a');
+        who.addEventListener('click', () =>{
+            const text = document.querySelector('#hphk');
+            text.innerHTML = 'Richard Matthew Stallman';
+        });
+
+        const what = document.querySelector('#b');
+        what.addEventListener('click',() =>{
+            const text = document.querySelector('#hphk');
+            text.innerHTML = 'Happy Hacking';
+        });
+    </script>
+</body>
+</html>
