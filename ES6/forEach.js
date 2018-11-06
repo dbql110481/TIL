@@ -27,7 +27,7 @@ numbers.forEach(function(num){
 
 console.log(sum);
 
-/* In real world */
+/* 실제로는? */
 spamMails = [];
 spamMails.forEach(function(spamMail){
     deleteMail(spamMail);
@@ -38,7 +38,7 @@ spamMails.forEach(function(spamMail){
 var posts = [
     { id:23, title: 'Daily JS News'},
     { id:52, title: 'Code Refactor City'},
-    { id:105, title: 'The Brightest Ruby'}
+    { id:105, title: 'The Brightest Ruby'},
 ];
 
 posts.forEach(function(post){
@@ -50,7 +50,7 @@ posts.forEach(function(post){
 var images = [
     {height: 10, width:30},
     {height: 20, width:90},
-    {height: 54, width:32}
+    {height: 54, width:32},
 ];
 
 var areas = [];
