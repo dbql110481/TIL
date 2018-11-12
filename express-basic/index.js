@@ -94,5 +94,5 @@ app.delete('/api/movies/:id', (req, res) => {
     res.send(movie);    
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000; 
 app.listen(port, () => console.log(`Listen on port ${port}`));
