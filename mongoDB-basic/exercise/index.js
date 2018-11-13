@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/hello-mongo', { useNewUrlParser: true })
-    .then(() => console.log('Connected to MongoDB'))
+mongoose.connect('mongodb://localhost/exercise-basic', { useNewUrlParser: true })
+    .then(() => console.log('Exercise TIME!'))
     .catch(error => console.error(error.message));
 
 // Available schema Datatypes: String, Number, Date, Buffer, Boolean, ObjectID, Array 
@@ -35,13 +35,11 @@ async function getCourses() {
     const courses = await Course
     // .find({ price: { $lt: 15, $gt: 10 } })
     // .find({ price: { $in: [10, 15] } })  
-    // .find({ isPublished: true })
+    .find({ isPublished: true})
+    .find({ tags: 'backend' })
     // .limit(10)
-    // .sort({ name: -1 })
-    // .select({ name: 1, tags: 1 })
-    // .find({ author: /^ne/i })
-    // .find({ author: /hn$/ })
-    // .find({ author: /.*oh.*/})
+    .sort({ name: 1 })
+    .select({ name: 1, author: 1 })
     console.log(courses);
 }
 /* 비교 쿼리 연산자
