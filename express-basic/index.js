@@ -2,97 +2,85 @@ const Joi = require('joi');
 const express = require('express');
 const app = express();
 
+app.use(express.json());
+
 const movies = [
-    { id: 1, title: 'Bohemian Rhapsody'},
-    { id: 2, title: 'Matrix'},
-    { id: 3, title: 'Edge of Tommorow'}
-]
+  { id: 1, title: 'Bohemian Rhapsody' },
+  { id: 2, title: 'Matrix' },
+  { id: 3, title: 'Edge of Tommorow' },
+];
 
 app.get('/', (req, res) => {
-    res.send('Happy Hacking');
+  res.send('Happy Hacking');
 });
 
 app.get('/:name', (req, res) => {
-    res.send(`Hi, ${teq.params.name}`);
+  res.send(`Hi, ${req.params.name}`);
 });
 
-// CRUD
-// CREATE READ UPDATE DESTROY
-// POST   GET  PUT    DELETE
 
-/* GET /api/movies/1 */
+/* GET /api/movies */
 app.get('/api/movies', (req, res) => {
-    res.send(movies);
+  res.send(movies);
 });
 
 /* GET /api/movies/1 */
 app.get('/api/movies/:id', (req, res) => {
-    const movie = movies.find((movie) => {
-        return movie.id === parseInt(req.params.id);
-    });
-    if(!movie){
-        res.status(404).send(`Movie with given id(${req.params.id}) is not found`);
-    }
-    res.send(movie);
+  const movie = getMovie(movies, parseInt(req.params.id));
+  if (!movie) res.status(404).send(`Movie with given id(${req.params.id}) is not found.`);
+  res.send(movie);
 });
 
-/* POST /api/movies/1 */
+/* POST /api/movies */
 app.post('/api/movies', (req, res) => {
-    const schema = {
-        title: Joi.string().min(2).required(),
-    }
+  const { error } = validateMovie(req.body)
 
-    const result = Joi.validate(req.body, schema);
-    console.log(result);
+  if (error) return res.status(400).send(error.message);
+  
+  const movie = {
+    id: movies.length + 1,
+    title: req.body.title
+  };
 
-    if(result.error){
-        res.status(400).send(result.error.message);
-    }
-
-    const movie = {
-        id: movies.length + 1,
-        title: req.body.title
-    };
-    movies.push(movie);
-    res.send(movies);
+  movies.push(movie);
+  res.send(movie);
 });
 
 /* PUT /api/movies/1 */
 app.put('/api/movies/:id', (req, res) => {
-    const movie = movies.find(movie => movie.id === parseInt(req.params.id))
+  const movie = getMovie(movies, parseInt(req.params.id));
+  if (!movie) return res.status(404).send(`The movie with the given ID(${req.params.id}) was not found`);
+  
+  const { error } = validateMovie(req.body)
+  // const error = validateMovie(req.body).error;
 
-    if(!movie) {
-        return res.status(404).send(`The movie with the given ID(${req.params.id}) was not found`)
-    }
+  if (error) return res.status(400).send(error.message);
 
-    const schema = {
-        title: Joi.string().min(2).required(),
-    }
-
-    const result = Joi.validate(req.body, schema);
-
-    if(result.error) {
-        return res.status(400).send(result.error.message);
-    }
-
-    movie.title = req.body.title;
-    res.send(movie);
+  movie.title = req.body.title;
+  res.send(movie);
 });
 
 /* DELETE /api/movies/1 */
 app.delete('/api/movies/:id', (req, res) => {
-    const movie = movies.find((movie) => {
-        return movie.id === parseInt(req.params.id);
-    });
+  const movie = getMovie(movies, parseInt(req.params.id));
+  if (!movie) return res.status(404).send(`The movie with the given ID(${req.params.id}) was not found`);
 
-    if(!movie) {
-        return res.status(404).send(`The movie with the given ID(${req.params.id}) was not found`)
-    }
-    const index = movies.indexOf(movie);
-    movies.splice(index, 1);
+  const index = movies.indexOf(movie);
+  movies.splice(index, 1);
 
-    res.send(movie);    
+  res.send(movie);
 });
 
-const port = process.env.PORT || 3000; 
-app.listen(port, () => console.log(`Listen on port ${port}`));
+function validateMovie(movie) {
+  const schema = {
+    title: Joi.string().min(2).required(),
+  }
+  return Joi.validate(movie, schema);
+}
+
+function getMovie(movies, id){
+  return movies.find(movie => movie.id === id)
+}
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Listening on port ${port}`));
